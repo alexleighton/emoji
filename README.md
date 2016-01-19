@@ -8,5 +8,4 @@ To run the tests:
 python -m unittest discover
 
 To run the app:
-
 python emoji/hello.py
