@@ -15,7 +15,7 @@ class AccountServiceTest(unittest.TestCase):
 
 
     def test_load_by_id(self):
-        self.redis.get.return_value = self.test_user.to_json()
+        self.redis.get.return_value = self.test_user.to_json().encode('utf-8')
 
         user = self.service.load(UserId('user_id'))
 
@@ -27,7 +27,7 @@ class AccountServiceTest(unittest.TestCase):
 
 
     def test_load_by_email(self):
-        self.redis.get.return_value = self.test_user.to_json()
+        self.redis.get.return_value = self.test_user.to_json().encode('utf-8')
 
         user = self.service.load('user_email')
 
@@ -39,12 +39,13 @@ class AccountServiceTest(unittest.TestCase):
 
 
     def test_store(self):
-        pipeline_mock = self.redis.pipeline()
-        pipeline_mock.set.return_value = pipeline_mock
+        pipe_mock = self.redis.pipeline()
+        pipe_mock.set.return_value = pipe_mock
 
         user = User('user_id', 'user_email', 'user_hash')
         self.service.store(user)
 
-        pipeline_mock.set.assert_any_call('user|by_id|user_id', user.to_json())
-        pipeline_mock.set.assert_any_call('user|by_email|user_email', user.to_json())
-        pipeline_mock.execute.assert_any_call()
+        js = user.to_json()
+        pipe_mock.set.assert_any_call('user|by_id|user_id', js.encode('utf-8'))
+        pipe_mock.set.assert_any_call('user|by_email|user_email', js.encode('utf-8'))
+        pipe_mock.execute.assert_any_call()
