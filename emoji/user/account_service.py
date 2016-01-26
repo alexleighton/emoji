@@ -15,22 +15,25 @@ class AccountService(object):
 
     def load_by_id(self, id):
         key = _by_id_index(id)
-        user_json = self.redis.get(key)
-        return User.from_json(user_json)
+        return self._load_by_key(key)
 
     def load_by_email(self, email_address):
         key = _by_email_index(email_address)
-        user_json = self.redis.get(key)
+        return self._load_by_key(key)
+
+    def _load_by_key(self, key):
+        user_json = self.redis.get(key).decode(_UTF8)
         return User.from_json(user_json)
 
     def store(self, user):
-        user_json = user.to_json()
+        user_json = user.to_json().encode(_UTF8)
 
         self.redis.pipeline()                             \
             .set(_by_id_index(user.id), user_json)        \
             .set(_by_email_index(user.email), user_json)  \
             .execute()
 
+_UTF8 = 'utf-8'
 _SEP = '|'
 
 def _by_id_index(user_id):
