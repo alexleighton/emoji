@@ -10,6 +10,7 @@ class AccountServiceDBTest(unittest.TestCase):
         self.redis = fakeredis.FakeStrictRedis()
         self.service = AccountService(self.redis)
 
+
     def test_store_and_load(self):
         user = User(UserId('stored_id'), 'stored_email', 'stored_hash')
 
@@ -24,3 +25,8 @@ class AccountServiceDBTest(unittest.TestCase):
         self.assertEqual('stored_id', str(user_by_email.id))
         self.assertEqual('stored_email', user_by_email.email)
         self.assertEqual('stored_hash', user_by_email.pass_hash)
+
+
+    def test_load_missing(self):
+        user = self.service.load('missing_email')
+        self.assertIsNone(user)

@@ -1,6 +1,7 @@
 import json
+import werkzeug.security
 
-import emoji.id
+from emoji.id import Id
 
 class User(object):
 
@@ -8,6 +9,14 @@ class User(object):
         self.id = id
         self.email = email
         self.pass_hash = pass_hash
+
+    @staticmethod
+    def create(email, password):
+        return User(UserId.generate(), email,
+                    werkzeug.security.generate_password_hash(password))
+
+    def check_password(self, potential_password):
+        return werkzeug.security.check_password_hash(self.pass_hash, potential_password)
 
     def to_json(self):
         return json.dumps({
@@ -24,7 +33,7 @@ class User(object):
                     pass_hash=u['pass_hash'])
 
 
-class UserId(emoji.id.Id):
+class UserId(Id):
 
     @staticmethod
     def generate():

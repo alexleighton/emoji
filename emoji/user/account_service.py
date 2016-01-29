@@ -22,8 +22,11 @@ class AccountService(object):
         return self._load_by_key(key)
 
     def _load_by_key(self, key):
-        user_json = self.redis.get(key).decode(_UTF8)
-        return User.from_json(user_json)
+        user_json = self.redis.get(key)
+        
+        if user_json is not None:
+            return User.from_json(user_json.decode(_UTF8))
+        return None
 
     def store(self, user):
         user_json = user.to_json().encode(_UTF8)

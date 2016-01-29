@@ -7,8 +7,8 @@ from emoji.id import Id
 
 class IdTest(unittest.TestCase):
 
-    @patch("time.time")
-    @patch("uuid.uuid4")
+    @patch('time.time')
+    @patch('uuid.uuid4')
     def test_generate(self, uuid_func, time_func):
         uuid_func.return_value = 'uuid'
         time_func.return_value = 123.456
