@@ -5,6 +5,7 @@ import uuid
 
 from emoji.id import Id
 
+
 class IdTest(unittest.TestCase):
 
     @patch('time.time')

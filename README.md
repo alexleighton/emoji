@@ -2,13 +2,13 @@
 A social network that only allows emoji messages.
 
 To install dependencies:
-$ pip install -r requirements.txt
+$ make install
 
 To run the unit tests:
-$ python -m unittest discover -s ./tests
+$ make test
 
 To run the integration tests:
-$ python -m unittest discover -s ./integ
+$ make integ
 
 To run the app:
-$ python main.py
+$ make
