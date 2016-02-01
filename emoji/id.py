@@ -1,6 +1,7 @@
 import time
 import uuid
 
+
 class Id(object):
     "Class containing a string value meant to represent an identifier."
 

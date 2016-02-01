@@ -3,6 +3,7 @@ import werkzeug.security
 
 from emoji.id import Id
 
+
 class User(object):
 
     def __init__(self, id, email, pass_hash):
@@ -16,7 +17,8 @@ class User(object):
                     werkzeug.security.generate_password_hash(password))
 
     def check_password(self, potential_password):
-        return werkzeug.security.check_password_hash(self.pass_hash, potential_password)
+        return werkzeug.security.check_password_hash(self.pass_hash,
+                                                     potential_password)
 
     def to_json(self):
         return json.dumps({

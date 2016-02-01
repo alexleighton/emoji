@@ -10,6 +10,7 @@ app = Flask('emoji')
 redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 account_service = AccountService(redis)
 
+
 @app.route('/login', methods=['POST'])
 def login():
     email_address = request.form['email']
@@ -25,8 +26,10 @@ def login():
     session['id'] = str(user.id)
     return jsonify(id=str(user.id))
 
+
 def fail_authorization():
     return Response('{"error": "unauthorized"}', 401)
+
 
 def requires_auth(f):
     @wraps(f)
@@ -36,12 +39,13 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
+
 def create_user(email_address, password):
     user = User.create(email_address, password)
     account_service.store(user)
     return user
 
+
 if __name__ == '__main__':
     app.secret_key = 'devo'
-    app.run(debug=True)                              
-
+    app.run(debug=True)

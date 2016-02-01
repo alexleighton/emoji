@@ -5,6 +5,7 @@ from unittest.mock import patch
 from emoji.user.user import User
 from emoji.user.user import UserId
 
+
 class UserTest(unittest.TestCase):
 
     @patch('time.time')
@@ -21,7 +22,6 @@ class UserTest(unittest.TestCase):
         self.assertEqual('user_email', user.email)
         self.assertEqual('user_pass_hash', user.pass_hash)
 
-
     @patch('werkzeug.security.check_password_hash')
     def test_check_password(self, check_password_hash_func):
         user = User(UserId('user_id'), 'user_email', 'user_hash')
@@ -32,7 +32,6 @@ class UserTest(unittest.TestCase):
         check_password_hash_func.return_value = False
         self.assertFalse(user.check_password('user_password'))
 
-
     def test_to_json(self):
         user = User(UserId('user_id'), 'user_email', 'user_hash')
         js = json.loads(user.to_json())
@@ -40,7 +39,6 @@ class UserTest(unittest.TestCase):
         self.assertEqual('user_id', js['id'])
         self.assertEqual('user_email', js['email'])
         self.assertEqual('user_hash', js['pass_hash'])
-
 
     def test_from_json(self):
         js = """{

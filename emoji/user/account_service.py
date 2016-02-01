@@ -2,6 +2,7 @@ import json
 
 from emoji.user.user import User, UserId
 
+
 class AccountService(object):
 
     def __init__(self, redis):
@@ -23,7 +24,7 @@ class AccountService(object):
 
     def _load_by_key(self, key):
         user_json = self.redis.get(key)
-        
+
         if user_json is not None:
             return User.from_json(user_json.decode(_UTF8))
         return None
@@ -39,8 +40,10 @@ class AccountService(object):
 _UTF8 = 'utf-8'
 _SEP = '|'
 
+
 def _by_id_index(user_id):
-    return _SEP.join( ('user', 'by_id', str(user_id)) )
+    return _SEP.join(('user', 'by_id', str(user_id)))
+
 
 def _by_email_index(email_address):
-    return _SEP.join( ('user', 'by_email', email_address) )
+    return _SEP.join(('user', 'by_email', email_address))
