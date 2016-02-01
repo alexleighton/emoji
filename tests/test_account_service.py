@@ -26,6 +26,14 @@ class AccountServiceTest(unittest.TestCase):
         self.redis.get.assert_called_with('user|by_id|user_id')
 
 
+    def test_load_by_id_missing(self):
+        self.redis.get.return_value = None
+
+        user = self.service.load(UserId('user_id'))
+
+        self.assertIsNone(user)
+
+
     def test_load_by_email(self):
         self.redis.get.return_value = self.test_user.to_json().encode('utf-8')
 
@@ -36,6 +44,14 @@ class AccountServiceTest(unittest.TestCase):
         self.assertEqual('stored_hash', user.pass_hash)
 
         self.redis.get.assert_called_with('user|by_email|user_email')
+
+
+    def test_load_by_email_missing(self):
+        self.redis.get.return_value = None
+
+        user = self.service.load('user_email')
+
+        self.assertIsNone(user)
 
 
     def test_store(self):
